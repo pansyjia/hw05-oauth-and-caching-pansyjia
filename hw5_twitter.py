@@ -31,7 +31,7 @@ requests.get(url, auth = auth)
 
 #Code for Part 1:Get Tweets
 params = { "screen_name": username, "count": num_tweets}
-response = oauth.get(url, params=params, oauth=auth)
+response = auth.get(url, params=params, oauth=auth)
 # print(response.text)
 
 
