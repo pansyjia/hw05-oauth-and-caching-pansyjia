@@ -117,7 +117,7 @@ print("TWEETS ANALYZED: ", num_tweets)
 print("THE 5 MOST FREQUENTLY USED WORDS: ")
 for word_tuple in sorted_words_lst[0:5]:
     word, frequency = word_tuple
-    print(word, "(",frequency,")")
+    print("{} ({})".format(word, frequency))
 
 
 
