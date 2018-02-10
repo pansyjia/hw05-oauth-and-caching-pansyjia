@@ -22,7 +22,7 @@ access_secret = secret_data.ACCESS_SECRET
 #Code for OAuth starts
 url = 'https://api.twitter.com/1.1/account/verify_credentials.json'
 auth = OAuth1(consumer_key, consumer_secret, access_token, access_secret)
-# requests.get(url, auth = auth)
+requests.get(url, auth = auth)
 #Code for OAuth ends
 
 #Write your code below:
@@ -31,9 +31,12 @@ auth = OAuth1(consumer_key, consumer_secret, access_token, access_secret)
 
 
 #Code for Part 1:Get Tweets
+######## get user tweets ########
 params = { "screen_name": username, "count": num_tweets}
-response = requests.get(url, params=params, auth=auth)
+response = requests.get(url, params=params, auth = auth)
 # print(response.text)
+
+## write the json to a file
 resp_file = "tweets.json"
 f = open(resp_file, "w")
 resp_dict = json.loads(response.text)
@@ -41,18 +44,20 @@ resp_str = json.dumps(resp_dict)
 f.write (resp_str)
 f.close()
 
+
+
 #Code for Part 2:Analyze Tweets
 for tweet in resp_dict["statuses"]:
-    tokenized_text = nltk.word_tokenize(tweet["text"])
-    words_dict = nltk.FreqDist(tokenized_text)
+    tokens = nltk.word_tokenize(tweet["text"])
+    words_dict = nltk.FreqDist(tokens)
 
 words_lst = []
 stopwords_lst = ["http", "https", "RT"]
 
 for tweet in resp_dict["statuses"]:
-    tokenized_text = nltk.word_tokenize(tweet["text"])
-    for word in tokenized_text:
-        if word[0].isalpha() and word not in ignore_lst:
+    tokens = nltk.word_tokenize(tweet["text"])
+    for word in tokens:
+        if word[0].isalpha() and word not in stopwords_lst:
             words_lst.append(word)
         else:
              print("Not a word: " + str(word))
@@ -65,8 +70,8 @@ sorted_words_lst = sorted(words_dict.items(), key = lambda x: x[1], reverse = Tr
 
 print("THE 5 MOST FREQUENTLY USED WORDS: ")
 for word_tuple in sorted_words_lst[0:5]:
-    word, frequency = word_tuple 
-    print(word, ":", frequency, "times")
+    word, frequency = word_tuple
+    print(word, ": ", frequency, "times")
 
 
 if __name__ == "__main__":
