@@ -42,7 +42,31 @@ f.write (resp_str)
 f.close()
 
 #Code for Part 2:Analyze Tweets
+for tweet in resp_dict["statuses"]:
+    tokenized_text = nltk.word_tokenize(tweet["text"])
+    words_dict = nltk.FreqDist(tokenized_text)
 
+words_lst = []
+stopwords_lst = ["http", "https", "RT"]
+
+for tweet in resp_dict["statuses"]:
+    tokenized_text = nltk.word_tokenize(tweet["text"])
+    for word in tokenized_text:
+        if word[0].isalpha() and word not in ignore_lst:
+            words_lst.append(word)
+        else:
+             print("Not a word: " + str(word))
+             continue
+
+words_dict = nltk.FreqDist(words_lst)
+
+
+sorted_words_lst = sorted(words_dict.items(), key = lambda x: x[1], reverse = True)
+
+print("THE 5 MOST FREQUENTLY USED WORDS: ")
+for word_tuple in sorted_words_lst[0:5]:
+    word, frequency = word_tuple 
+    print(word, ":", frequency, "times")
 
 
 if __name__ == "__main__":
