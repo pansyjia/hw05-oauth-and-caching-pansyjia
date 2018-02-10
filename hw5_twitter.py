@@ -68,10 +68,11 @@ def get_from_twitter(username, num_tweets):
         print("Fetching data from Twitter...")
         response = requests.get(url = base_url, params = params_dict, auth = auth)
         resp_lst = json.loads(response.text) #resp_lst is a list of dictionaries(tweets)
+        CACHE_DICTION[unique_ident]= resp_lst
         write_file = open(CACHE_TWITTER, 'w')
         write_file.write(json.dumps(CACHE_DICTION))
         write_file.close()
-        return resp_lst
+        return CACHE_DICTION[unique_ident]
 
 
 
@@ -117,7 +118,7 @@ print("TWEETS ANALYZED: ", num_tweets)
 print("THE 5 MOST FREQUENTLY USED WORDS: ")
 for word_tuple in sorted_words_lst[0:5]:
     word, frequency = word_tuple
-    print("{} ({})".format(word, frequency))
+    print("{}({})".format(word, frequency))
 
 
 
